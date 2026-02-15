@@ -3,6 +3,8 @@ package http
 import (
 	"log/slog"
 	"net/http"
+
+	"github.com/jackc/pgx/v5"
 )
 
 type Config struct {
@@ -12,11 +14,13 @@ type Config struct {
 
 type Server struct {
 	config Config
+	db     *pgx.Conn
 }
 
-func New(cnf Config) *Server {
+func New(cnf Config, db *pgx.Conn) *Server {
 	return &Server{
 		config: cnf,
+		db:     db,
 	}
 }
 

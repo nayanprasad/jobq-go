@@ -22,7 +22,7 @@ func NewRouter(s *Server) http.Handler {
 		w.Write([]byte("pong"))
 	})
 
-	jobRepository := postgres.NewJobRepository(nil)
+	jobRepository := postgres.NewJobRepository(s.db)
 	jobService := service.NewService(jobRepository)
 	jobHandler := handler.NewHandler(jobService)
 	r.Post("/job/create", jobHandler.CreateJob)
