@@ -1,2 +1,4 @@
 server:
   port: 5055
+  db: 
+    dsn: ""
