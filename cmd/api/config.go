@@ -1,29 +1,25 @@
 package main
 
-import (
-	"os"
-
-	"gopkg.in/yaml.v3"
-)
-
 type AppConfig struct {
-	Server struct {
-		Port int `yaml:"port"`
-		DB   struct {
-			DSN string `yaml:"dsn,omitempty"`
-		} `yaml:"db"`
-	} `yaml:"server"`
+	Server ServerConfig `yaml:"server"`
 }
 
-func LoadConfig(path string) (*AppConfig, error) {
-	data, err := os.ReadFile(path)
-	if err != nil {
-		return nil, err
-	}
-
-	var cfg AppConfig
-	if err := yaml.Unmarshal(data, &cfg); err != nil {
-		return nil, err
-	}
-	return &cfg, nil
+type ServerConfig struct {
+	Port int      `yaml:"port"`
+	DB   DBConfig `yaml:"db"`
 }
+
+type DBConfig struct {
+	DSN string `yaml:"dsn,omitempty"`
+}
+
+// func DefaultAppConfig() *AppConfig {
+// 	return &AppConfig{
+// 		Server: ServerConfig{
+// 			Port: 8080,
+// 			DB: DBConfig{
+// 				DSN: "default vaoue",
+// 			},
+// 		},
+// 	}
+// }
