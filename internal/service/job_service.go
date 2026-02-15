@@ -2,8 +2,11 @@ package service
 
 import (
 	"context"
+	"log/slog"
 
+	"github.com/nayanprasad/jobQ-go/internal/domain/job"
 	"github.com/nayanprasad/jobQ-go/internal/domain/job/command"
+	"github.com/nayanprasad/jobQ-go/internal/repository"
 )
 
 type JobService interface {
@@ -11,16 +14,35 @@ type JobService interface {
 }
 
 type svc struct {
-	//repo
+	repo repository.JobRepository
 	//db
 }
 
-func NewService() *svc {
-	return &svc{}
+func NewService(repo repository.JobRepository) *svc {
+	return &svc{
+		repo: repo,
+	}
 }
 
 func (s *svc) CreateJob(ctx context.Context, cmd command.CreateJobCommand) error {
-	//query and create job here
+
+	j := &job.Job{
+		Type:        cmd.JobType,
+		Payload:     cmd.Payload,
+		Status:      job.StatusPending,
+		MaxRetries:  cmd.MaxRetries,
+		RetryCount:  0,
+		Priority:    cmd.Priority,
+		AvailableAt: *cmd.ScheduledAt, // should validate this and set time
+	}
+
+	createdJob, err := s.repo.Create(ctx, j)
+	if err != nil {
+		slog.Error("Error while creating job", "error", err.Error())
+		return err
+	}
+
+	slog.Info("created job", "job", createdJob)
 
 	return nil
 }

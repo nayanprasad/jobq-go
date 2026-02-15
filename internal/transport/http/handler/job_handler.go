@@ -10,17 +10,17 @@ import (
 	"github.com/nayanprasad/jobQ-go/pkg/json"
 )
 
-type JobHanlder struct {
+type JobHandler struct {
 	service service.JobService
 }
 
-func NewHandler(s service.JobService) *JobHanlder {
-	return &JobHanlder{
+func NewHandler(s service.JobService) *JobHandler {
+	return &JobHandler{
 		service: s,
 	}
 }
 
-func (h JobHanlder) CreateJob(w http.ResponseWriter, r *http.Request) {
+func (h JobHandler) CreateJob(w http.ResponseWriter, r *http.Request) {
 	var reqBody CreateJobRequest
 	if err := json.ReadRequest(r, reqBody); err != nil {
 		slog.Error(err.Error())
