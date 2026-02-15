@@ -16,3 +16,7 @@ func ReadRequest(r *http.Request, d any) error {
 	decoder.DisallowUnknownFields()
 	return decoder.Decode(d)
 }
+
+func Read(data []byte, v any) error {
+	return json.Unmarshal(data, v)
+}
