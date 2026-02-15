@@ -5,6 +5,7 @@ import (
 	"log/slog"
 	"os"
 
+	"github.com/nayanprasad/jobQ-go/internal/appConfig"
 	"github.com/nayanprasad/jobQ-go/internal/transport/http"
 	"gopkg.in/yaml.v3"
 )
@@ -22,16 +23,16 @@ func main() {
 	slog.Debug("ping")
 
 	//load config
-	appConfig, err := loadConfig(configPath)
+	appCnf, err := loadConfig(configPath)
 	if err != nil {
 		slog.Error("failed to load config", "error", err)
 		os.Exit(1)
 	}
 
 	// server setup
-	cnf := hppt.Config{
-		Addr: fmt.Sprintf(":%d", appConfig.Server.Port),
-		DSN:  appConfig.Server.DB.DSN,
+	cnf := http.Config{
+		Addr: fmt.Sprintf(":%d", appCnf.Server.Port),
+		DSN:  appCnf.Server.DB.DSN,
 	}
 
 	server := http.New(cnf)
@@ -43,13 +44,13 @@ func main() {
 	}
 }
 
-func loadConfig(path string) (*AppConfig, error) {
+func loadConfig(path string) (*appConfig.AppConfig, error) {
 	data, err := os.ReadFile(path)
 	if err != nil {
 		return nil, err
 	}
 
-	var cfg AppConfig
+	var cfg appConfig.AppConfig
 	if err := yaml.Unmarshal(data, &cfg); err != nil {
 		return nil, err
 	}

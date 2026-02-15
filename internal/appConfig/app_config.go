@@ -1,4 +1,4 @@
-package main
+package appConfig
 
 type AppConfig struct {
 	Server ServerConfig `yaml:"server"`
