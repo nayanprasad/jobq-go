@@ -5,7 +5,7 @@ import (
 	"log/slog"
 	"os"
 
-	"github.com/nayanprasad/jobQ-go/internal/api"
+	"github.com/nayanprasad/jobQ-go/internal/transport/http"
 	"gopkg.in/yaml.v3"
 )
 
@@ -29,15 +29,15 @@ func main() {
 	}
 
 	// server setup
-	cnf := api.Config{
+	cnf := hppt.Config{
 		Addr: fmt.Sprintf(":%d", appConfig.Server.Port),
 		DSN:  appConfig.Server.DB.DSN,
 	}
 
-	app := api.New(cnf)
+	server := http.New(cnf)
 
-	h := app.Mount()
-	if err := app.Run(h); err != nil {
+	h := server.Mount()
+	if err := server.Run(h); err != nil {
 		slog.Error("failied start the server", "error", err.Error())
 		os.Exit(1)
 	}
