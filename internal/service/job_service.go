@@ -15,7 +15,6 @@ type JobService interface {
 
 type svc struct {
 	repo repository.JobRepository
-	//db
 }
 
 func NewService(repo repository.JobRepository) *svc {

@@ -23,3 +23,9 @@ func (r *JobRepository) Create(ctx context.Context, j *job.Job) (*job.Job, error
 
 	return &job.Job{}, nil
 }
+
+func (r *JobRepository) Get(ctx context.Context, id int32) (*job.Job, error) {
+	//query here
+
+	return &job.Job{}, nil
+}
